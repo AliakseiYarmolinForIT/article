@@ -1,7 +1,8 @@
-// import { config } from 'dotenv';
+// конфигуряция для миграций
+import { config } from 'dotenv';
 import { DataSource } from 'typeorm';
 
-// config();
+config();
 
 export default new DataSource({
   url: process.env.DATABASE_URL,

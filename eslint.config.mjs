@@ -1,6 +1,5 @@
-// @ts-check
 import eslint from '@eslint/js';
-// import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -10,7 +9,7 @@ export default tseslint.config(
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
-  // eslintPluginPrettierRecommended,
+  eslintPluginPrettierRecommended,
   {
     languageOptions: {
       globals: {
@@ -26,11 +25,20 @@ export default tseslint.config(
   },
   {
     rules: {
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn',
+      '@typescript-eslint/no-unsafe-member-access': 'warn', // доступ к полям с any или unknown
+      '@typescript-eslint/no-unsafe-assignment': 'warn', // присваивание any или unknown
+      '@typescript-eslint/no-explicit-any': 'warn', // использование типа any
+      '@typescript-eslint/no-unsafe-call': 'warn', // вызов any функций
+      '@typescript-eslint/require-await': 'warn', // async без await
+      '@typescript-eslint/no-floating-promises': 'warn', // необработанные Promises
+      '@typescript-eslint/no-unsafe-argument': 'warn', // any аргументы
+      '@typescript-eslint/unbound-method': 'warn', // передача метода без this
+      'prettier/prettier': [
+        'error',
+        {
+          endOfLine: 'auto', // автоматическое определение окончаний строк
+        },
+      ],
     },
   },
 );

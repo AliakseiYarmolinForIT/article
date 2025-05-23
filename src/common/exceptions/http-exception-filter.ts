@@ -5,11 +5,12 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { ErrorResponse } from '../types/error-response.type';
+import { ErrorResponseViewModel } from '../view-models/error-response.vies-model';
 
+// ExceptionFilter для http ошибок
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
-  catch(exception: HttpException, host: ArgumentsHost) {
+  public catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
@@ -18,7 +19,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     const errorsMessages = this.getErrorMessages(exceptionResponse);
 
-    const responseBody: ErrorResponse = {
+    const responseBody: ErrorResponseViewModel = {
       statusCode: status,
       errorsMessages,
       timestamp: new Date().toISOString(),
@@ -29,7 +30,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
   }
 
   private getErrorMessages(exceptionResponse: any) {
-    // Обработка ошибок валидации из ValidationPipe
+    // обработка ошибок валидации из ValidationPipe
     if (Array.isArray(exceptionResponse)) {
       return exceptionResponse.map((error) => ({
         message: error.message || 'Validation error',
@@ -37,7 +38,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       }));
     }
 
-    // Обработка стандартных HttpException
+    // обработка стандартных HttpException
     const message =
       typeof exceptionResponse === 'string'
         ? exceptionResponse

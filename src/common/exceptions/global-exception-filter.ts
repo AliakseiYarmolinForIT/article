@@ -1,15 +1,16 @@
 import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { ErrorResponse } from '../types/error-response.type';
+import { ErrorResponseViewModel } from '../view-models/error-response.vies-model';
 
+// ExceptionFilter для не http ошибок
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
-  catch(exception: Error, host: ArgumentsHost) {
+  public catch(exception: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
-    const responseBody: ErrorResponse = {
+    const responseBody: ErrorResponseViewModel = {
       statusCode: 500,
       errorsMessages: [
         {
